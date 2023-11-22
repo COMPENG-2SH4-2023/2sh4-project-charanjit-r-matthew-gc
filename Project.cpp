@@ -7,6 +7,7 @@
 using namespace std;
 
 #define DELAY_CONST 100000
+#define ASCII_ESC 27
 
 GameMechs* myGM;
 Player* myPlayer;
@@ -50,11 +51,14 @@ void Initialize(void)
 
 void GetInput(void)
 {
-    
+    myGM->setInput(myGM->getInput());
 }
 
 void RunLogic(void)
 {
+    if (myGM->getInput() == ASCII_ESC)
+        myGM->setExitTrue();
+
     myPlayer->updatePlayerDir();
 }
 
@@ -84,6 +88,11 @@ void DrawScreen(void)
     myGM->getBoardSizeX(), 
     myGM->getBoardSizeY(),
     tempPos.x, tempPos.y, tempPos.symbol);
+
+    if(myGM->getLoseFlagStatus())
+    {
+       MacUILib_printf("You Lost :("); 
+    }
 }
 
 void LoopDelay(void)
@@ -97,4 +106,7 @@ void CleanUp(void)
     MacUILib_clearScreen();    
   
     MacUILib_uninit();
+
+    delete myGM;
+    delete myPlayer;
 }
