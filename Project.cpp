@@ -65,6 +65,21 @@ void DrawScreen(void)
     objPos tempPos;
     myPlayer->getPlayerPos(tempPos); //get the player pos.  
     
+    for(int i = 0;i<myGM->getBoardSizeY();i++)
+    {
+        for(int j = 0;j<myGM->getBoardSizeX();j++) 
+        {
+            if (i==tempPos.y && j==tempPos.x)
+                MacUILib_printf("%c", tempPos.symbol);
+            else if(i==0||j==0||i==myGM->getBoardSizeY()-1||j==myGM->getBoardSizeX()-1)
+                MacUILib_printf("#"); 
+            else    
+                MacUILib_printf(" "); 
+        }
+        MacUILib_printf("\n");
+    }
+
+
     MacUILib_printf("BoardSize: %dx%d, Player Pos: <%d, %d> + %c\n", 
     myGM->getBoardSizeX(), 
     myGM->getBoardSizeY(),
