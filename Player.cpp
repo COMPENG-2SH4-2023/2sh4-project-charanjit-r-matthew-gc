@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "GameMechs.h"
 
 
 Player::Player(GameMechs* thisGMRef)
@@ -39,33 +40,55 @@ void Player::updatePlayerDir()
 
     switch(input)
     {
-         case 'w':  
-                if (myDir != DOWN)
-                    myDir = UP;
-                break;
+        case 'w':  
+            if (myDir != DOWN)
+                myDir = UP;
+            break;
+
             // Add more key processing here
-            case 's':
-                if (myDir != UP)  
-                    myDir = DOWN;
-                break;
+        
+        case 's':
+            if (myDir != UP)  
+                myDir = DOWN;
+            break;
             // Add more key processing here    
-            case 'a': 
-                if (myDir != RIGHT)  
-                    myDir = LEFT;
-                break;
+        
+        case 'a': 
+            if (myDir != RIGHT)  
+                myDir = LEFT;
+            break;
 
-            case 'd': 
-                if (myDir != LEFT)  
-                    myDir = RIGHT;
-                break;
+        case 'd': 
+            if (myDir != LEFT)  
+                myDir = RIGHT;
+            break;
 
-            default:
-                break;
-    }     
+        default:
+            break;
+    }    
+
+
 }
 
 void Player::movePlayer()
 {
     // PPA3 Finite state Machine logic
+    if (myDir == UP){
+        playerPos.y--; 
+    }
+
+    else if(myDir == DOWN){
+        playerPos.y++;
+    }
+
+    else if(myDir == LEFT){
+        playerPos.x--;
+    }
+
+    else if(myDir == RIGHT){
+        playerPos.x++;
+    }
+
+    // clearInput();
 }
 
