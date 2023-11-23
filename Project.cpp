@@ -60,6 +60,7 @@ void RunLogic(void)
         myGM->setExitTrue();
 
     myPlayer->updatePlayerDir();
+    myPlayer->movePlayer();
 }
 
 void DrawScreen(void)

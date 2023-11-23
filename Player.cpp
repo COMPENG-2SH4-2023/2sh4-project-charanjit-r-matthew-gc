@@ -88,7 +88,6 @@ void Player::movePlayer()
     else if(myDir == RIGHT){
         playerPos.x++;
     }
-
-    // clearInput();
+    
 }
 
