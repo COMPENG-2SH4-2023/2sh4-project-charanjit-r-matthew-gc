@@ -88,6 +88,14 @@ void Player::movePlayer()
     else if(myDir == RIGHT){
         playerPos.x++;
     }
-    
+
+    if (playerPos.x == mainGameMechsRef->getBoardSizeX()-1)
+        playerPos.x = 1;
+    if (playerPos.x == 0)
+        playerPos.x = mainGameMechsRef->getBoardSizeX()-2;
+    if (playerPos.y == mainGameMechsRef->getBoardSizeY()-1)
+        playerPos.y = 1;
+    if (playerPos.y == 0)
+        playerPos.y = mainGameMechsRef->getBoardSizeY()-2;
 }
 

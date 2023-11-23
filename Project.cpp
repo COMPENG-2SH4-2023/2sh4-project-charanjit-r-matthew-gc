@@ -58,7 +58,7 @@ void RunLogic(void)
 {
     if (myGM->getInput() == ASCII_ESC)
         myGM->setExitTrue();
-
+    
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
 }
@@ -85,7 +85,8 @@ void DrawScreen(void)
     }
 
 
-    MacUILib_printf("BoardSize: %dx%d, Player Pos: <%d, %d> + %c\n", 
+    MacUILib_printf("Score: %d\n\nBoardSize: %dx%d\nPlayer Pos: <%d, %d>\nPlayer Symbol: %c\n", 
+    myGM->getScore(), 
     myGM->getBoardSizeX(), 
     myGM->getBoardSizeY(),
     tempPos.x, tempPos.y, tempPos.symbol);
