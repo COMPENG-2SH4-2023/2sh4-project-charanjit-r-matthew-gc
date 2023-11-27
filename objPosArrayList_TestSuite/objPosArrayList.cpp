@@ -24,28 +24,40 @@ void objPosArrayList::insertHead(objPos thisPos)
 {
     //still need error check - what if listsize is at max cap
     // check if listsize is equal to arraycap already. If yes, at cap, don't insert
-    for(int i = listsize;i>0;i--)
+    if (listsize != arrayCapacity)
     {
-        aList[i].setObjPos(aList[i-1]); // this will shufle all the elements towards the tial
-    }
+        for(int i = listsize;i>0;i--)
+        {
+            aList[i].setObjPos(aList[i-1]); // this will shufle all the elements towards the tail
+        }
 
-    aList[0].setObjPos(thisPos);
-    listsize++;
+        aList[0].setObjPos(thisPos);
+        listsize++;
+    }
+    
 }
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
-
+    if (listsize != arrayCapacity)
+    {
+        listsize++;
+        aList[listsize-1].setObjPos(thisPos);
+    }
 }
 
 void objPosArrayList::removeHead()
 {
-    
+        for(int i = 0;i<listsize;i++)
+        {
+            aList[i].setObjPos(aList[i+1]); // this will shufle all the elements towards the head
+        }
+        listsize--;
 }
 
 void objPosArrayList::removeTail()
 {
-
+    listsize--;
 }
 
 void objPosArrayList::getHeadElement(objPos &returnPos)
@@ -60,5 +72,5 @@ void objPosArrayList::getTailElement(objPos &returnPos)
 
 void objPosArrayList::getElement(objPos &returnPos, int index)
 {
-    
+    returnPos.setObjPos(aList[index]);
 }
