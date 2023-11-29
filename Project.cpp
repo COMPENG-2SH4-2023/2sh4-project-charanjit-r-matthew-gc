@@ -47,6 +47,9 @@ void Initialize(void)
     myGM = new GameMechs(30, 15);
     myPlayer = new Player(myGM);
 
+    // Think about when to generate new food...
+    //Think about whether you want to set up a debug to call te food gen routine for verification
+    //remember, generateFood() requires player reference. You will need to provide it after object is instaniated
 }
 
 void GetInput(void)
@@ -58,8 +61,9 @@ void RunLogic(void)
 {
     if (myGM->getInput() == ASCII_ESC)
         myGM->setExitTrue();
-
+    
     myPlayer->updatePlayerDir();
+    myPlayer->movePlayer();
 }
 
 void DrawScreen(void)
@@ -84,7 +88,8 @@ void DrawScreen(void)
     }
 
 
-    MacUILib_printf("BoardSize: %dx%d, Player Pos: <%d, %d> + %c\n", 
+    MacUILib_printf("Score: %d\n\nBoardSize: %dx%d\nPlayer Pos: <%d, %d>\nPlayer Symbol: %c\n", 
+    myGM->getScore(), 
     myGM->getBoardSizeX(), 
     myGM->getBoardSizeY(),
     tempPos.x, tempPos.y, tempPos.symbol);
