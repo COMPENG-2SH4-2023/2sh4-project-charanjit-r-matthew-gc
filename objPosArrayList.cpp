@@ -6,8 +6,8 @@
 objPosArrayList::objPosArrayList()
 {
     aList = new objPos[ARRAY_MAX_CAP]; //200 elements on the heap
-    listsize = 0;                      // no valid element in the list upon startup
-    arrayCapacity = ARRAY_MAX_CAP;
+    sizeList = 0;                      // no valid element in the list upon startup
+    sizeArray = ARRAY_MAX_CAP;
 }
 
 objPosArrayList::~objPosArrayList()
@@ -17,47 +17,47 @@ objPosArrayList::~objPosArrayList()
 
 int objPosArrayList::getSize()
 {
-    return listsize;
+    return sizeList;
 }
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
-    //still need error check - what if listsize is at max cap
-    // check if listsize is equal to arraycap already. If yes, at cap, don't insert
-    if (listsize != arrayCapacity)
+    //still need error check - what if sizeList is at max cap
+    // check if sizeList is equal to arraycap already. If yes, at cap, don't insert
+    if (sizeList != sizeArray)
     {
-        for(int i = listsize;i>0;i--)
+        for(int i = sizeList;i>0;i--)
         {
             aList[i].setObjPos(aList[i-1]); // this will shufle all the elements towards the tail
         }
 
         aList[0].setObjPos(thisPos);
-        listsize++;
+        sizeList++;
     }
     
 }
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
-    if (listsize != arrayCapacity)
+    if (sizeList != sizeArray)
     {
-        listsize++;
-        aList[listsize-1].setObjPos(thisPos);
+        sizeList++;
+        aList[sizeList-1].setObjPos(thisPos);
     }
 }
 
 void objPosArrayList::removeHead()
 {
-        for(int i = 0;i<listsize;i++)
+        for(int i = 0;i<sizeList;i++)
         {
             aList[i].setObjPos(aList[i+1]); // this will shufle all the elements towards the head
         }
-        listsize--;
+        sizeList--;
 }
 
 void objPosArrayList::removeTail()
 {
-    listsize--;
+    sizeList--;
 }
 
 void objPosArrayList::getHeadElement(objPos &returnPos)
@@ -67,7 +67,7 @@ void objPosArrayList::getHeadElement(objPos &returnPos)
 
 void objPosArrayList::getTailElement(objPos &returnPos)
 {
-    returnPos.setObjPos(aList[listsize-1]);
+    returnPos.setObjPos(aList[sizeList-1]);
 }
 
 void objPosArrayList::getElement(objPos &returnPos, int index)

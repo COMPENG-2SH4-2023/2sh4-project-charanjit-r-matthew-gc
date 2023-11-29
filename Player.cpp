@@ -36,6 +36,7 @@ void Player::updatePlayerDir()
     //      3. there will be a method in gamemech class that collectivly checks input
     //          and stores it
 
+    // char input = mainGameMechsRef->getInput();
     char input = mainGameMechsRef->getInput();
 
     switch(input)
