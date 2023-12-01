@@ -15,9 +15,6 @@ using namespace std;
 GameMechs* myGM;
 Player* myPlayer;
 
-// ***
-objPos food;
-
 void Initialize(void);
 void GetInput(void);
 void RunLogic(void);
@@ -74,6 +71,7 @@ void RunLogic(void)
     
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+
 }
 
 void DrawScreen(void)
@@ -83,9 +81,9 @@ void DrawScreen(void)
     objPos tempPos;
     myPlayer->getPlayerPos(tempPos); //get the player pos.
 
-    // ***
     objPos food;
-    myGM -> getFoodPos(food);  
+    myGM->generateFood(tempPos); // Gen random pos for food
+    myGM->getFoodPos(food);  //Get the food pos.
     
     for(int i = 0;i<myGM->getBoardSizeY();i++)
     {
@@ -95,23 +93,10 @@ void DrawScreen(void)
                 MacUILib_printf("%c", tempPos.symbol);
             else if(i==0||j==0||i==myGM->getBoardSizeY()-1||j==myGM->getBoardSizeX()-1)
                 MacUILib_printf("#");
-            // ***
             else if (i == food.y && j == food.x)
                 MacUILib_printf("%c", food.symbol);
             else    
-                MacUILib_printf(" "); 
-           
-            // *** 
-            /*
-            if (i == food.y && j == food.x){
-                MacUILib_printf ("%c", food.symbol);
-
-                else{
-                    MacUILib_printf (" ");
-                }
-            }
-            */
-            
+                MacUILib_printf(" ");   
         }
         MacUILib_printf("\n");
     }

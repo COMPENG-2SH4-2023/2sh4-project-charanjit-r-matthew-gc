@@ -13,9 +13,8 @@ GameMechs::GameMechs()
     boardSizeX = 20;    //Defult board size
     boardSizeY = 10;  
 
-    // ***
-    // foodPos.setObjPos(-1,-1,'o');
-    // srand(time(NULL));
+    foodPos.setObjPos(-1,-1,'o');
+    srand(time(NULL));
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -24,20 +23,17 @@ GameMechs::GameMechs(int boardX, int boardY)
     exitFlag = false;
     loseFlag = false;
     score = 0;
-    boardSizeX = boardX;    
+    boardSizeX = boardX;    //Given board size
     boardSizeY = boardY;
 
-    // ***
-    // srand(time(NULL));
-    // foodPos.setObjPos(-1,-1,'o');
+    foodPos.setObjPos(-1,-1,'o');
+    srand(time(NULL));
 }
 
 // do you need a destructor?
 GameMechs::~GameMechs()
 {
 
-    // ***Generating the initial position of:
-    // generateFood(objPos(-1,-1, 'o'));
 }
 
 bool GameMechs::getExitFlagStatus()
@@ -105,27 +101,26 @@ void GameMechs::generateFood(objPos blockOff)
     //check x and y against 0 and boardSizeX/Y
     //remember, in objPos class you have an isPosEqual() method. Use this instead of comparing element by element
     //for your convencince
-    // int randX;
-    // int randY;
-    // ***
+    
+    objPos randomCoords;
 
-    objPos random_coordinates;
-
-    while ((foodPos.x < 1 || foodPos.y < 1 ||  foodPos.x >= (boardSizeX - 1) || foodPos.y >= (boardSizeY - 1))) {
-
+    while ((foodPos.x < 1 || foodPos.y < 1 ||  foodPos.x >= (boardSizeX - 1) || foodPos.y >= (boardSizeY - 1))) 
+    {
+        //The while conditions allows the while to run if food is not on the board
+        //After food is collect we should set foodPos to -1,-1 again to run this function again
         // to randomly generate coordinates
-        random_coordinates.x = rand() % (boardSizeX - 2) + 1;
-        random_coordinates.y = rand() % (boardSizeY - 2) + 1;
+        randomCoords.x = rand()%(boardSizeX - 2) + 1;
+        randomCoords.y = rand()%(boardSizeY - 2) + 1;
 
-        if(random_coordinates.isPosEqual(&blockOff)) // Regenerate if random coordinates match player position
+        if(randomCoords.isPosEqual(&blockOff)) // Run code again if the fooPos is on the same pos as the snake
         { 
-            random_coordinates.x = rand() % (boardSizeX - 2) + 1;
-            random_coordinates.y = rand() % (boardSizeY - 2) + 1;
+            randomCoords.x = rand()%(boardSizeX - 2) + 1;
+            randomCoords.y = rand()%(boardSizeY - 2) + 1;
         }
-        else // If not, assign food position
+        else //If foodPos doesn't conflict with anything the foodPos is set
         {
-          foodPos.x = random_coordinates.x;
-          foodPos.y = random_coordinates.y;
+          foodPos.x = randomCoords.x;
+          foodPos.y = randomCoords.y;
         }
 
     }
@@ -135,7 +130,7 @@ void GameMechs::generateFood(objPos blockOff)
 void GameMechs::getFoodPos(objPos &returnPos)
 {
 
-    // obtaining current position of food
+    // Returns the current Pos of food
     returnPos.setObjPos(foodPos.x, foodPos.y, foodPos.symbol);
     
 }
