@@ -2,7 +2,8 @@
 #define GAMEMECHS_H
 
 #include <cstdlib>
-#include <time.h> // can be raplced by ctime
+#include <time.h> // can be replaced by ctime
+                    // provides time() 
 
 #include "objPos.h"
 #include "objPosArrayList.h"

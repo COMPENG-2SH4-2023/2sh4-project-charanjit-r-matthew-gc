@@ -3,14 +3,20 @@
 #include "objPos.h"
 #include "GameMechs.h"
 #include "Player.h"
+// #include "objPosArrayList.h"
 
 using namespace std;
 
 #define DELAY_CONST 100000
 #define ASCII_ESC 27
 
+// OOD Benefit - very limited global var declaration
+//  In advance OOD, you don't even need global variables
 GameMechs* myGM;
 Player* myPlayer;
+
+// ***
+objPos food;
 
 void Initialize(void);
 void GetInput(void);
@@ -50,6 +56,10 @@ void Initialize(void)
     // Think about when to generate new food...
     //Think about whether you want to set up a debug to call te food gen routine for verification
     //remember, generateFood() requires player reference. You will need to provide it after object is instaniated
+
+    // ***
+    objPos tempPos(-1 , -1, 'o');
+    myGM -> generateFood(tempPos);
 }
 
 void GetInput(void)
@@ -71,7 +81,11 @@ void DrawScreen(void)
     MacUILib_clearScreen();  
 
     objPos tempPos;
-    myPlayer->getPlayerPos(tempPos); //get the player pos.  
+    myPlayer->getPlayerPos(tempPos); //get the player pos.
+
+    // ***
+    objPos food;
+    myGM -> getFoodPos(food);  
     
     for(int i = 0;i<myGM->getBoardSizeY();i++)
     {
@@ -80,9 +94,24 @@ void DrawScreen(void)
             if (i==tempPos.y && j==tempPos.x)
                 MacUILib_printf("%c", tempPos.symbol);
             else if(i==0||j==0||i==myGM->getBoardSizeY()-1||j==myGM->getBoardSizeX()-1)
-                MacUILib_printf("#"); 
+                MacUILib_printf("#");
+            // ***
+            else if (i == food.y && j == food.x)
+                MacUILib_printf("%c", food.symbol);
             else    
                 MacUILib_printf(" "); 
+           
+            // *** 
+            /*
+            if (i == food.y && j == food.x){
+                MacUILib_printf ("%c", food.symbol);
+
+                else{
+                    MacUILib_printf (" ");
+                }
+            }
+            */
+            
         }
         MacUILib_printf("\n");
     }
@@ -112,6 +141,7 @@ void CleanUp(void)
   
     MacUILib_uninit();
 
+    // Remove heap instances
     delete myGM;
     delete myPlayer;
 }

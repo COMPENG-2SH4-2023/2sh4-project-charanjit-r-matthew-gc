@@ -11,9 +11,11 @@ GameMechs::GameMechs()
     loseFlag = false;
     score = 0;
     boardSizeX = 20;    //Defult board size
-    boardSizeY = 10;    
+    boardSizeY = 10;  
 
-    foodPos.setObjPos(-1,-1,'o');
+    // ***
+    // foodPos.setObjPos(-1,-1,'o');
+    // srand(time(NULL));
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -25,13 +27,17 @@ GameMechs::GameMechs(int boardX, int boardY)
     boardSizeX = boardX;    
     boardSizeY = boardY;
 
-    foodPos.setObjPos(-1,-1,'o');
+    // ***
+    // srand(time(NULL));
+    // foodPos.setObjPos(-1,-1,'o');
 }
 
 // do you need a destructor?
 GameMechs::~GameMechs()
 {
-    
+
+    // ***Generating the initial position of:
+    // generateFood(objPos(-1,-1, 'o'));
 }
 
 bool GameMechs::getExitFlagStatus()
@@ -96,12 +102,40 @@ void GameMechs::incrementScore()
 void GameMechs::generateFood(objPos blockOff)
 {
     // generate random x and y coord, and make sure they are NOT border or blockOff pos.
-    //chekc x and y against 0 and boardSizeX/Y
-    //remeber, in objPos class you have an isPosEqual() method. Use this instead of comparing element by element
+    //check x and y against 0 and boardSizeX/Y
+    //remember, in objPos class you have an isPosEqual() method. Use this instead of comparing element by element
     //for your convencince
+    // int randX;
+    // int randY;
+    // ***
+
+    objPos random_coordinates;
+
+    while ((foodPos.x < 1 || foodPos.y < 1 ||  foodPos.x >= (boardSizeX - 1) || foodPos.y >= (boardSizeY - 1))) {
+
+        // to randomly generate coordinates
+        random_coordinates.x = rand() % (boardSizeX - 2) + 1;
+        random_coordinates.y = rand() % (boardSizeY - 2) + 1;
+
+        if(random_coordinates.isPosEqual(&blockOff)) // Regenerate if random coordinates match player position
+        { 
+            random_coordinates.x = rand() % (boardSizeX - 2) + 1;
+            random_coordinates.y = rand() % (boardSizeY - 2) + 1;
+        }
+        else // If not, assign food position
+        {
+          foodPos.x = random_coordinates.x;
+          foodPos.y = random_coordinates.y;
+        }
+
+    }
+
 }
 
 void GameMechs::getFoodPos(objPos &returnPos)
 {
 
+    // obtaining current position of food
+    returnPos.setObjPos(foodPos.x, foodPos.y, foodPos.symbol);
+    
 }
