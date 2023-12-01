@@ -39,9 +39,11 @@ void objPosArrayList::insertHead(objPos thisPos)
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
+    // check if listsize is equal to arraycap already. If yes, at cap, don't insert
     if (listsize != arrayCapacity)
     {
         listsize++;
+        //Adds the element at the end of the array list
         aList[listsize-1].setObjPos(thisPos);
     }
 }
@@ -51,6 +53,7 @@ void objPosArrayList::removeHead()
         for(int i = 0;i<listsize;i++)
         {
             aList[i].setObjPos(aList[i+1]); // this will shufle all the elements towards the head
+            // Doing this will overwrtie the head 
         }
         listsize--;
 }
