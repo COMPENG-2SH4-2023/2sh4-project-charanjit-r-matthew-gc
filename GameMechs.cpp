@@ -1,6 +1,7 @@
 #include "GameMechs.h"
 #include "MacUILib.h"
 #include "objPos.h"
+#include "objPosArrayList.h"
 
 //Think about where to seed the RNG.
 
@@ -12,9 +13,7 @@ GameMechs::GameMechs()
     score = 0;
     boardSizeX = 20;    //Defult board size
     boardSizeY = 10;  
-
     foodPos.setObjPos(-1,-1,'o');
-    srand(time(NULL));
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -25,9 +24,7 @@ GameMechs::GameMechs(int boardX, int boardY)
     score = 0;
     boardSizeX = boardX;    //Given board size
     boardSizeY = boardY;
-
     foodPos.setObjPos(-1,-1,'o');
-    srand(time(NULL));
 }
 
 // do you need a destructor?
@@ -95,16 +92,20 @@ void GameMechs::incrementScore()
     score++;
 }
 
-void GameMechs::generateFood(objPos blockOff)
+void GameMechs::generateFood(objPosArrayList* blockOff)
 {
     // generate random x and y coord, and make sure they are NOT border or blockOff pos.
-    //check x and y against 0 and boardSizeX/Y
-    //remember, in objPos class you have an isPosEqual() method. Use this instead of comparing element by element
-    //for your convencince
+    // check x and y against 0 and boardSizeX/Y
+    // remember, in objPos class you have an isPosEqual() method. Use this instead of comparing element by element
+    // for your convencince
     
     objPos randomCoords;
-
-    while ((foodPos.x < 1 || foodPos.y < 1 ||  foodPos.x >= (boardSizeX - 1) || foodPos.y >= (boardSizeY - 1))) 
+    objPos tempBody;
+    blockOff->getHeadElement(tempBody);
+    bool samePos;
+    
+    while (foodPos.x < 1 || foodPos.y < 1 ||  foodPos.x >= (boardSizeX - 1) || foodPos.y >= (boardSizeY - 1) 
+           || (tempBody.x == foodPos.x && tempBody.y == foodPos.y)) 
     {
         //The while conditions allows the while to run if food is not on the board
         //After food is collect we should set foodPos to -1,-1 again to run this function again
@@ -112,8 +113,19 @@ void GameMechs::generateFood(objPos blockOff)
         randomCoords.x = rand()%(boardSizeX - 2) + 1;
         randomCoords.y = rand()%(boardSizeY - 2) + 1;
 
-        if(randomCoords.isPosEqual(&blockOff)) // Run code again if the fooPos is on the same pos as the snake
-        { 
+        samePos = false;
+        for(int i = 0;i<blockOff->getSize();i++)
+        {
+            blockOff->getElement(tempBody, i);
+            if(randomCoords.isPosEqual(&tempBody))
+            {
+                samePos == true;
+                continue;
+            }
+        }
+
+        if(samePos)
+        {
             randomCoords.x = rand()%(boardSizeX - 2) + 1;
             randomCoords.y = rand()%(boardSizeY - 2) + 1;
         }

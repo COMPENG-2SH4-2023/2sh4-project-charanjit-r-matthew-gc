@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "GameMechs.h"
 #include "objPosArrayList.h"
+#include "MacUILib.h"
 
 
 Player::Player(GameMechs* thisGMRef)
@@ -15,12 +16,9 @@ Player::Player(GameMechs* thisGMRef)
                       '@');
     playerPosList = new objPosArrayList();
     playerPosList->insertHead(tempPos);
-
-    //For debugging purpose - insert another 4 segments
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
+    
+    srand(time(NULL));
+    mainGameMechsRef->generateFood(playerPosList);
 }
 
 
@@ -88,6 +86,7 @@ void Player::movePlayer()
     objPos currHead;
     playerPosList->getHeadElement(currHead);
 
+    objPos tempFoodPos;
     // PPA3 Finite state Machine logic
     if (myDir == UP){
         currHead.y--; 
@@ -114,9 +113,40 @@ void Player::movePlayer()
     if (currHead.y == 0)
         currHead.y = mainGameMechsRef->getBoardSizeY()-2;
 
+    // Iteration 3:
+    // Check if the new head position collides with any element in the playerPosList
+    for (int i = 1; i < playerPosList -> getSize(); i++)
+    {
+
+        objPos player_element;
+        playerPosList -> getElement(player_element, i);
+
+
+        // If yes, set both lose flag and exit flag in the gameMechanics object
+        if (currHead.isPosEqual(&player_element))
+        {
+
+            // This will force the game to shut down, and trigger the different exit message with the lose flag set to true
+            mainGameMechsRef -> setLoseTrue();
+            mainGameMechsRef -> setExitTrue();
+
+            // If not, carry forward with movement and food consumption detection 
+        }
+    }
+
+    
     // new current head should be inserted to the head of the list
     playerPosList->insertHead(currHead);
+    playerPosList->getHeadElement(currHead);
+    mainGameMechsRef->getFoodPos(tempFoodPos);
 
-    playerPosList->removeTail();
+    if (currHead.x == tempFoodPos.x && currHead.y == tempFoodPos.y)
+    {
+        mainGameMechsRef->generateFood(playerPosList);
+        mainGameMechsRef->incrementScore();
+    }
+    else
+        playerPosList->removeTail();
+        
 }
 

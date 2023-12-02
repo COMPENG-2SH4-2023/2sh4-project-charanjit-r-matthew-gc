@@ -54,9 +54,6 @@ void Initialize(void)
     //Think about whether you want to set up a debug to call te food gen routine for verification
     //remember, generateFood() requires player reference. You will need to provide it after object is instaniated
 
-    // this is a makeshfit setup
-    objPos tempPos(-1 , -1, 'o');
-    myGM -> generateFood(tempPos); // Gen random pos for food
 }
 
 void GetInput(void)
@@ -119,10 +116,7 @@ void DrawScreen(void)
 
     MacUILib_printf("Score: %d\n", myGM->getScore());
 
-    if(myGM->getLoseFlagStatus())
-    {
-       MacUILib_printf("You Lost :("); 
-    }
+    
 }
 
 void LoopDelay(void)
@@ -134,9 +128,12 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-  
+    if(myGM->getLoseFlagStatus())
+    {
+       MacUILib_printf("You Lost :("); 
+    }
     MacUILib_uninit();
-
+    
     // Remove heap instances
     delete myGM;
     delete myPlayer;
