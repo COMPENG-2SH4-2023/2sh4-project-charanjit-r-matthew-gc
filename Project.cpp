@@ -130,7 +130,8 @@ void CleanUp(void)
     MacUILib_clearScreen();    
     if(myGM->getLoseFlagStatus())
     {
-       MacUILib_printf("You Lost :("); 
+       MacUILib_printf("You Lost :( \n"); 
+       MacUILib_printf("Your Final Score!!!: %d\n", myGM->getScore());
     }
     MacUILib_uninit();
     
