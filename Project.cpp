@@ -41,11 +41,13 @@ int main(void)
 
 }
 
-
+// Initializing the game
 void Initialize(void)
 {
     MacUILib_init();
     MacUILib_clearScreen();
+
+    // Initializing/creating instances of GameMechs and Player
 
     myGM = new GameMechs(30, 15);
     myPlayer = new Player(myGM);
@@ -56,6 +58,7 @@ void Initialize(void)
 
 }
 
+// Getting the user input
 void GetInput(void)
 {
     myGM->setInput(myGM->getInput());
@@ -63,9 +66,11 @@ void GetInput(void)
 
 void RunLogic(void)
 {
+    // Checking for an exit input
     if (myGM->getInput() == ASCII_ESC)
         myGM->setExitTrue();
     
+    // Updating the plater's direction --> and moving
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
 
@@ -81,7 +86,8 @@ void DrawScreen(void)
     objPos tempBody;
 
     objPos food;
-    myGM->getFoodPos(food);  //Get the food pos.
+    //Get the food position
+    myGM->getFoodPos(food);
     
     for(int i = 0;i<myGM->getBoardSizeY();i++)
     {
@@ -94,6 +100,7 @@ void DrawScreen(void)
                 playerBody->getElement(tempBody, k);
                 if(tempBody.x == j && tempBody.y == i)
                 {
+                    // To draw the player symbol
                     MacUILib_printf("%c", tempBody.symbol);
                     drawn = true;
                     break;
@@ -103,6 +110,7 @@ void DrawScreen(void)
             if(drawn) continue;
             // if playerBody is drawn don't draw anything below
 
+            // To draw the boarders and food
             if(i==0||j==0||i==myGM->getBoardSizeY()-1||j==myGM->getBoardSizeX()-1)
                 MacUILib_printf("#");
             else if (i == food.y && j == food.x)
@@ -113,8 +121,11 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
 
-
-    MacUILib_printf("Score: %d\n", myGM->getScore());
+    // Printing the game messages (score and instructions) upon initialization of the game
+    MacUILib_printf("Score: %d\n\n", myGM->getScore());
+    MacUILib_printf("Goal: Collect the food '%c' and grow the snake's body\n", food.symbol);
+    MacUILib_printf("Rules: Don't collide into the snake or you lose!\n");
+    
 
     
 }
@@ -128,10 +139,13 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
+
+    // To display the game result need lose flag status from game mechanics
     if(myGM->getLoseFlagStatus())
     {
-       MacUILib_printf("You Lost :( \n"); 
-       MacUILib_printf("Your Final Score!!!: %d\n", myGM->getScore());
+        // Game lost messages
+        MacUILib_printf("You Lost because you collided into the snake :( \n\n"); 
+        MacUILib_printf("Your Final Score: %d\n", myGM->getScore());
     }
     MacUILib_uninit();
     

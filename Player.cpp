@@ -6,10 +6,13 @@
 
 Player::Player(GameMechs* thisGMRef)
 {
+    // Set the reference to the main GameMechs object
     mainGameMechsRef = thisGMRef;
+
+    // To initialize the intial condition: stationary
     myDir = STOP;
 
-    // more actions to be included
+    // Initialize the player's position
     objPos tempPos;
     tempPos.setObjPos(mainGameMechsRef->getBoardSizeX() / 2,
                       mainGameMechsRef->getBoardSizeY() / 2, 
@@ -17,17 +20,21 @@ Player::Player(GameMechs* thisGMRef)
     playerPosList = new objPosArrayList();
     playerPosList->insertHead(tempPos);
     
+    // Initializing the random number generator
     srand(time(NULL));
+
+    // Generating the initial food position, (after defining in GameMechs.cpp)
     mainGameMechsRef->generateFood(playerPosList);
 }
 
-
+// Destructor for the player class
 Player::~Player()
 {
     // delete any heap members here
     delete playerPosList;
 }
 
+// Getting the reference to the player's position array list
 objPosArrayList* Player::getPlayerPos()
 {
     return playerPosList;
@@ -35,6 +42,7 @@ objPosArrayList* Player::getPlayerPos()
 
 }
 
+// To update the players direction based on the user input
 void Player::updatePlayerDir()
 {
     // PPA3 input processing logic   
@@ -45,9 +53,10 @@ void Player::updatePlayerDir()
     //      3. there will be a method in gamemech class that collectivly checks input
     //          and stores it
 
-    // char input = mainGameMechsRef->getInput();
+    // Getting the user input from the GameMechs class
     char input = mainGameMechsRef->getInput();
 
+    // Process input --> update direction
     switch(input)
     {
         case 'w':  
@@ -55,13 +64,11 @@ void Player::updatePlayerDir()
                 myDir = UP;
             break;
 
-            // Add more key processing here
         
         case 's':
             if (myDir != UP)  
                 myDir = DOWN;
-            break;
-            // Add more key processing here    
+            break; 
         
         case 'a': 
             if (myDir != RIGHT)  
@@ -77,9 +84,9 @@ void Player::updatePlayerDir()
             break;
     }    
 
-
 }
 
+// Modifying payer position based on myDir
 void Player::movePlayer()
 {
 
@@ -104,12 +111,16 @@ void Player::movePlayer()
         currHead.x++;
     }
 
+    // Wrapping around the board
     if (currHead.x == mainGameMechsRef->getBoardSizeX()-1)
         currHead.x = 1;
+
     if (currHead.x == 0)
         currHead.x = mainGameMechsRef->getBoardSizeX()-2;
+
     if (currHead.y == mainGameMechsRef->getBoardSizeY()-1)
         currHead.y = 1;
+
     if (currHead.y == 0)
         currHead.y = mainGameMechsRef->getBoardSizeY()-2;
 
@@ -140,8 +151,10 @@ void Player::movePlayer()
     playerPosList->getHeadElement(currHead);
     mainGameMechsRef->getFoodPos(tempFoodPos);
 
+    // Check if the player's head collides with the food
     if (currHead.x == tempFoodPos.x && currHead.y == tempFoodPos.y)
     {
+        // Generating new food thus incrementing the score
         mainGameMechsRef->generateFood(playerPosList);
         mainGameMechsRef->incrementScore();
     }

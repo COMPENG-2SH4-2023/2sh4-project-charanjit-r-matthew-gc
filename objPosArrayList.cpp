@@ -3,6 +3,7 @@
 // Check lecture contents on general purpose array list construction, 
 // and modify it to support objPos array list construction.
 
+// Used to initialize the arrayCapacity and listSize, along with allocating an array on the heap 
 objPosArrayList::objPosArrayList()
 {
     aList = new objPos[ARRAY_MAX_CAP]; //200 elements on the heap
@@ -10,11 +11,13 @@ objPosArrayList::objPosArrayList()
     arrayCapacity = ARRAY_MAX_CAP;
 }
 
+// Deallocating the heap data members --> defense against memory leakage
 objPosArrayList::~objPosArrayList()
 {
     delete[] aList;
 }
 
+// Returns the size of the list
 int objPosArrayList::getSize()
 {
     return listsize;
@@ -26,7 +29,7 @@ void objPosArrayList::insertHead(objPos thisPos)
     // check if listsize is equal to arraycap already. If yes, at cap, don't insert
     if (listsize != arrayCapacity)
     {
-        for(int i = listsize;i>0;i--)
+        for(int i = listsize; i > 0 ; i--)
         {
             aList[i].setObjPos(aList[i-1]); // this will shufle all the elements towards the tail
         }
@@ -37,6 +40,7 @@ void objPosArrayList::insertHead(objPos thisPos)
     
 }
 
+// Inserting thisPos as a new objPos element to the tail of the list
 void objPosArrayList::insertTail(objPos thisPos)
 {
     // check if listsize is equal to arraycap already. If yes, at cap, don't insert
@@ -47,6 +51,7 @@ void objPosArrayList::insertTail(objPos thisPos)
         aList[listsize-1].setObjPos(thisPos);
     }
 }
+
 
 void objPosArrayList::removeHead()
 {
@@ -63,16 +68,19 @@ void objPosArrayList::removeTail()
     listsize--;
 }
 
+// Get the objPos element at the head of the list
 void objPosArrayList::getHeadElement(objPos &returnPos)
 {
     returnPos.setObjPos(aList[0]);
 }
 
+// Get the objPos element at the tail of the list
 void objPosArrayList::getTailElement(objPos &returnPos)
 {
     returnPos.setObjPos(aList[listsize-1]);
 }
 
+// Get the n-th objPos element from the list, where n is specified by index
 void objPosArrayList::getElement(objPos &returnPos, int index)
 {
     returnPos.setObjPos(aList[index]);
